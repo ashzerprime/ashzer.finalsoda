@@ -1,0 +1,200 @@
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --accent: #e11d48; /* couleur du soda */
+  --glass: #dbeafe;
+  --bottle-width: 220px;
+}
+
+/* Reset simple */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.02), transparent 10%),
+    linear-gradient(180deg, #071022 0%, var(--bg) 100%);
+  color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Left and right columns */
+.side-left,
+.side-right {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.side-left {
+  left: 18px;
+  text-align: left;
+}
+
+.side-right {
+  right: 18px;
+  text-align: right;
+  max-width: 160px;
+}
+
+.links a {
+  color: var(--glass);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.links a:hover {
+  text-decoration: underline;
+  color: var(--accent);
+}
+
+/* Main stage */
+.stage {
+  width: 100%;
+  max-width: 900px;
+  padding: 40px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bottle container */
+.bottle-wrap {
+  width: var(--bottle-width);
+  max-width: 38vw;
+  min-width: 160px;
+  position: relative;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.label {
+  text-align: center;
+  margin-top: 12px;
+  color: #f1f5f9;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}
+
+.brand {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 18px;
+  display: block;
+}
+
+.bottle-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* The .bottle uses CSS var for fill level */
+.bottle {
+  --fill: 100%;
+}
+
+.bottle.filled {
+  --fill: 0%;
+}
+
+/* Bubbles */
+.bubbles {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8%;
+  bottom: 12%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.bubble {
+  position: absolute;
+  bottom: 6%;
+  border-radius: 50%;
+  opacity: 0.9;
+  animation: bubbleRise linear forwards;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+}
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0) scale(0.2);
+    opacity: 0.9;
+  }
+  20% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-230%) scale(0.9);
+    opacity: 0;
+  }
+}
+
+/* Hover animation */
+.bottle-wrap:hover,
+.bottle-wrap:active {
+  cursor: pointer;
+  transform: translateY(-4px);
+  transition: transform 0.18s ease;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .side-left,
+  .side-right {
+    display: none;
+  }
+  .label {
+    font-size: 13px;
+  }
+}
+
+/* SVG styling */
+.liquid-shape {
+  fill: var(--accent);
+  filter: url(#blur);
+}
+
+.glass-outline {
+  fill: none;
+  stroke: #cbd5e1;
+  stroke-width: 2;
+  stroke-opacity: 0.9;
+}
+
+.bottle-shadow {
+  opacity: 0.06;
+  filter: blur(6px);
+}
+
+.liquid-group {
+  transition: transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  transform-origin: 50% 100%;
+}
+
+.slogan {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-top: 8px;
+  font-weight: 500;
+  opacity: 0.85;
+}
