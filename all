@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Soda Inutile — ashzer_prime</title>
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --accent:#e11d48; /* couleur du soda */
+    --glass:#dbeafe;
+    --bottle-width:220px;
+  }
+
+  /* Reset simple */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(circle at 10% 10%, rgba(255,255,255,0.02), transparent 10%),
+                linear-gradient(180deg, #071022 0%, var(--bg) 100%);
+    color: #f8fafc;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+  }
+
+  /* Left and right columns */
+  .side-left, .side-right{
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    line-height:1.6;
+    opacity:0.95;
+  }
+  .side-left{left:18px; text-align:left}
+  .side-right{right:18px; text-align:right; max-width:160px}
+
+  .links a{
+    color:var(--glass);
+    text-decoration:none;
+    display:block;
+    margin-bottom:6px;
+  }
+  .links a:hover{ text-decoration:underline; color:var(--accent) }
+
+  /* Main stage */
+  .stage{
+    width:100%;
+    max-width:900px;
+    padding:40px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Bottle container */
+  .bottle-wrap{
+    width:var(--bottle-width);
+    max-width:38vw;
+    min-width:160px;
+    position:relative;
+    user-select:none;
+    touch-action:manipulation;
+  }
+
+  /* Make a nice base / label area */
+  .label {
+    text-align:center;
+    margin-top:12px;
+    color:#f1f5f9;
+    font-weight:600;
+    letter-spacing:0.04em;
+    font-size:14px;
+  }
+  .brand {
+    color:var(--accent);
+    font-weight:800;
+    font-size:18px;
+    display:block;
+  }
+
+  /* SVG fits container */
+  .bottle-svg{ width:100%; height:auto; display:block }
+
+  /* We'll control the liquid level with a CSS variable:
+     --fill: 100% => empty; --fill: 0% => full (so translateY works)
+  */
+  .bottle{
+    --fill: 100%;
+  }
+
+  /* When filled, set --fill to 0% to make liquid rise (we invert intentionally) */
+  .bottle.filled{
+    --fill: 0%;
+  }
+
+  /* The .liquid inside SVG uses transform to move vertically based on --fill */
+  /* CSS for bubble container */
+  .bubbles{
+    position:absolute;
+    left:0; right:0;
+    top:8%; bottom:12%;
+    pointer-events:none;
+    overflow:visible;
+  }
+  .bubble{
+    position:absolute;
+    bottom:6%;
+    border-radius:50%;
+    opacity:0.9;
+    animation: bubbleRise linear forwards;
+    will-change:transform,opacity;
+    mix-blend-mode:screen;
+  }
+
+  @keyframes bubbleRise{
+    0%{ transform: translateY(0) scale(0.2); opacity:0.9; }
+    20%{ opacity:0.95 }
+    100%{ transform: translateY(-230%) scale(0.9); opacity:0; }
+  }
+
+  /* Nice hover cursor effect on bottle */
+  .bottle-wrap:active, .bottle-wrap:hover { cursor: pointer; transform: translateY(-4px); transition: transform .18s ease; }
+
+  /* Small responsive tweak */
+  @media (max-width:600px){
+    .side-left, .side-right{display:none}
+    .label{font-size:13px}
+  }
+
+  /* SVG-specific tweaks to make liquid look nice regardless of viewport */
+  /* The SVG internal classes are styled here: */
+  .liquid-shape{ fill: var(--accent); filter: url(#blur) }
+  .glass-outline{ fill:none; stroke:#cbd5e1; stroke-width:2; stroke-opacity:0.9 }
+  .bottle-shadow{ opacity:0.06; filter:blur(6px); }
+
+  /* Make the liquid movement smooth */
+  .liquid-group{
+    transition: transform 900ms cubic-bezier(.2,.9,.2,1);
+    transform-origin: 50% 100%;
+  }
+
+  /* label underline decor */
+  .slogan{ font-size:12px; color:#cbd5e1; margin-top:8px; font-weight:500; opacity:0.85 }
+</style>
+</head>
+<body>
+
+  <div class="side-left">
+    <div class="links">
+      <div><strong>my discord</strong> ashzer_prime</div>
+      <div style="margin-top:8px"><strong>my youtube</strong></div>
+      <div><a href="https://www.youtube.com/@ashzer_prime" target="_blank" rel="noopener">https://www.youtube.com/@ashzer_prime</a></div>
+    </div>
+  </div>
+
+  <div class="side-right">
+    <div><strong>englais</strong></div>
+    <div style="margin-top:10px; opacity:0.9">ceci est inutile mais satisfaisant</div>
+  </div>
+
+  <main class="stage" aria-label="Bouteille interactive">
+    <!-- Bottle container -->
+    <div class="bottle-wrap" id="bottleWrap" role="button" aria-pressed="false" tabindex="0">
+      <div class="bottle" id="bottle">
+        <!-- Inline SVG bottle: outline + liquid group clipped to bottle shape -->
+        <svg class="bottle-svg" viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+          <defs>
+            <!-- clip path for the bottle interior -->
+            <clipPath id="bottleClip">
+              <!-- simplified bottle inside shape -->
+              <path d="M84 10
+                       C84 10,86 10,86 18
+                       L86 60
+                       C86 68,92 78,92 92
+                       L92 130
+                       C92 150,88 160,88 190
+                       C88 230,102 240,102 300
+                       C102 360,86 410,86 435
+                       C86 460,110 480,110 480
+                       L90 480
+                       C64 480,30 460,30 430
+                       C30 395,46 355,46 320
+                       C46 270,80 240,80 200
+                       C80 160,66 130,66 92
+                       L66 56
+                       C66 40,76 10,84 10 Z"/>
+            </clipPath>
+
+            <!-- subtle gaussian blur for liquid shine -->
+            <filter id="blur" x="-20%" y="-20%" width="140%" height="140%">
+               <feGaussianBlur stdDeviation="0.7" />
+            </filter>
+
+            <!-- tiny highlight gradient -->
+            <linearGradient id="gloss" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.06"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+            </linearGradient>
+
+          </defs>
+
+          <!-- shadow under bottle -->
+          <ellipse class="bottle-shadow" cx="100" cy="482" rx="62" ry="10" fill="#000" />
+
+          <!-- bottle glass (outline) -->
+          <g transform="translate(0,0)">
+            <path class="glass-outline"
+                  d="M84 10
+                     C84 10,86 10,86 18
+                     L86 60
+                     C86 68,92 78,92 92
+                     L92 130
+                     C92 150,88 160,88 190
+                     C88 230,102 240,102 300
+                     C102 360,86 410,86 435
+                     C86 460,110 480,110 480
+                     L90 480
+                     C64 480,30 460,30 430
+                     C30 395,46 355,46 320
+                     C46 270,80 240,80 200
+                     C80 160,66 130,66 92
+                     L66 56
+                     C66 40,76 10,84 10 Z"/>
+            <!-- glass fill for subtle interior -->
+            <path d="M84 10 C84 10,86 10,86 18 L86 60 C86 68,92 78,92 92 L92 130 C92 150,88 160,88 190 C88 230,102 240,102 300 C102 360,86 410,86 435 C86 460,110 480,110 480 L90 480 C64 480,30 460,30 430 C30 395,46 355,46 320 C46 270,80 240,80 200 C80 160,66 130,66 92 L66 56 C66 40,76 10,84 10 Z"
+                  fill="url(#gloss)" opacity="0.06"/>
+          </g>
+
+          <!-- LIQUID GROUP: clipped to bottle shape. The transform on this group will be driven by CSS variable --fill -->
+          <g clip-path="url(#bottleClip)">
+            <g class="liquid-group" id="liquidGroup" style="transform:translateY(var(--svg-translate, 100%));">
+              <!-- The main rectangle representing liquid (bigger than bottle to ensure coverage) -->
+              <rect x="-10" y="240" width="220" height="500" class="liquid-shape"/>
+
+              <!-- Some wavy surface for the top of the liquid -->
+              <path d="M-20 260 C 20 240, 60 270, 100 260 C 140 250, 180 280, 220 260 L220 320 L-20 320 Z" fill="#ff5b7a" opacity="0.96"/>
+              <!-- highlight -->
+              <path d="M-20 275 C 20 260, 60 285, 100 275 C 140 265, 180 295, 220 275 L220 320 L-20 320 Z" fill="#fff" opacity="0.03"/>
+            </g>
+          </g>
+
+        </svg>
+
+        <!-- Bubbles container (DOM elements created by JS) -->
+        <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+      </div>
+
+      <div class="label">
+        <span class="brand">PRIMEFIZZ</span>
+        <span class="slogan">Soda inutile — mais satisfaisant</span>
+      </div>
+
+    </div>
+  </main>
+
+<script>
+/*
+  JS manages:
+  - toggling .filled class on hover/touch/keyboard
+  - mapping CSS variable --fill to the svg translate
+  - creating/removing bubble elements while filled
+*/
+
+const bottle = document.getElementById('bottle');
+const wrap = document.getElementById('bottleWrap');
+const liquidGroup = document.getElementById('liquidGroup');
+const bubblesContainer = document.getElementById('bubbles');
+
+let filling = false;
+let bubbleInterval = null;
+
+// helper: set svg translate according to --fill (0% => full, 100% => empty)
+function applyFillVar(){
+  // read computed style --fill (as "0%" or "100%")
+  const cs = getComputedStyle(bottle);
+  const raw = cs.getPropertyValue('--fill').trim() || '100%';
+  // parse percent
+  const pct = parseFloat(raw.replace('%',''));
+  // we want translateY such that 100% => moved down (empty), 0% => moved up (full)
+  // choose mapping: translateY(pct%)
+  liquidGroup.style.transform = `translateY(${pct}%)`;
+}
+
+// create a bubble element and animate it; removed after animation
+function spawnBubble(){
+  const b = document.createElement('div');
+  b.className = 'bubble';
+  // randomize horizontal position within bottle width
+  const left = (10 + Math.random()*80); // percent of container width
+  const size = 6 + Math.random()*18; // px
+  b.style.left = left + '%';
+  b.style.width = size + 'px';
+  b.style.height = size + 'px';
+  // duration randomized
+  const dur = 2200 + Math.random()*1600;
+  b.style.animationDuration = dur + 'ms';
+  b.style.background = 'radial-gradient(circle at 35% 35%, rgba(255,255,255,0.95), rgba(255,255,255,0.35) 40%, rgba(255,255,255,0.05) 80%)';
+  b.style.opacity = 0.95;
+  bubblesContainer.appendChild(b);
+  // remove after animation
+  setTimeout(()=> b.remove(), dur + 50);
+}
+
+// start spawning bubbles
+function startBubbles(){
+  if(bubbleInterval) return;
+  bubbleInterval = setInterval(()=>{
+    // spawn 1-3 bubbles at a time
+    const n = 1 + Math.floor(Math.random()*3);
+    for(let i=0;i<n;i++){ spawnBubble(); }
+  }, 300);
+}
+
+// stop spawning
+function stopBubbles(){
+  if(bubbleInterval){ clearInterval(bubbleInterval); bubbleInterval = null;}
+  // remove remaining bubbles after short delay
+  setTimeout(()=> {
+    const all = bubblesContainer.querySelectorAll('.bubble');
+    all.forEach(b=> b.remove());
+  }, 400);
+}
+
+// toggle filled state
+function setFilled(state){
+  filling = !!state;
+  if(filling){
+    bottle.classList.add('filled');
+    bottle.style.setProperty('--fill','0%'); // 0% => full
+    bottle.setAttribute('aria-pressed','true');
+    startBubbles();
+  } else {
+    bottle.classList.remove('filled');
+    bottle.style.setProperty('--fill','100%'); // 100% => empty
+    bottle.setAttribute('aria-pressed','false');
+    stopBubbles();
+  }
+  applyFillVar();
+}
+
+// initial state empty
+setFilled(false);
+
+// Hover for desktop
+wrap.addEventListener('mouseenter', ()=> setFilled(true));
+wrap.addEventListener('mouseleave', ()=> setFilled(false));
+
+// Touch support: toggle while pressing, then release
+wrap.addEventListener('touchstart', (e)=>{
+  e.preventDefault();
+  setFilled(true);
+}, {passive:false});
+wrap.addEventListener('touchend', ()=> setFilled(false));
+wrap.addEventListener('touchcancel', ()=> setFilled(false));
+
+// Keyboard accessibility: Space or Enter to toggle while held
+wrap.addEventListener('keydown', (e)=>{
+  if(e.code === 'Space' || e.key === ' ' || e.key === 'Enter'){
+    e.preventDefault();
+    setFilled(true);
+  }
+});
+wrap.addEventListener('keyup', (e)=>{
+  if(e.code === 'Space' || e.key === ' ' || e.key === 'Enter'){
+    e.preventDefault();
+    setFilled(false);
+  }
+});
+
+// Keep visual in sync if CSS var changed (in case)
+const observer = new MutationObserver(applyFillVar);
+observer.observe(bottle, {attributes:true,attributeFilter:['style']});
+
+// Sync initially
+applyFillVar();
+
+</script>
+
+</body>
+</html>
