@@ -15,14 +15,14 @@
       <div><a href="https://www.youtube.com/@ashzer_prime" target="_blank" rel="noopener">https://www.youtube.com/@ashzer_prime</a></div>
     </div>
   </div>
-<svg class="bottle-svg" viewBox="0 0 220 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<svg class="bottle-svg" viewBox="0 0 200 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <defs>
-    <!-- Forme réaliste de bouteille de soda -->
+    <!-- Forme réaliste mais proportion plus fine -->
     <clipPath id="bottleClip">
       <path d="
-        M95,10
+        M85,30
         h30
-        c10,0,10,8,10,15
+        c8,0,10,8,10,15
         v20
         c0,8,8,15,10,25
         c2,10,2,25,2,40
@@ -30,13 +30,13 @@
         c0,10,-10,20,-10,35
         v40
         c0,15,10,25,10,40
-        v120
+        v100
         c0,15,-10,30,-20,35
         c-5,3,-10,5,-15,5
         h-14
         c-5,0,-10,-2,-15,-5
         c-10,-5,-20,-20,-20,-35
-        v-120
+        v-100
         c0,-15,10,-25,10,-40
         v-40
         c0,-15,-10,-25,-10,-35
@@ -56,14 +56,14 @@
   </defs>
 
   <!-- Ombre -->
-  <ellipse class="bottle-shadow" cx="110" cy="500" rx="70" ry="10" fill="#000" opacity="0.15"/>
+  <ellipse class="bottle-shadow" cx="100" cy="482" rx="60" ry="10" fill="#000" opacity="0.15"/>
 
   <!-- Contour -->
   <path class="glass-outline"
         d="
-        M95,10
+        M85,30
         h30
-        c10,0,10,8,10,15
+        c8,0,10,8,10,15
         v20
         c0,8,8,15,10,25
         c2,10,2,25,2,40
@@ -71,13 +71,13 @@
         c0,10,-10,20,-10,35
         v40
         c0,15,10,25,10,40
-        v120
+        v100
         c0,15,-10,30,-20,35
         c-5,3,-10,5,-15,5
         h-14
         c-5,0,-10,-2,-15,-5
         c-10,-5,-20,-20,-20,-35
-        v-120
+        v-100
         c0,-15,10,-25,10,-40
         v-40
         c0,-15,-10,-25,-10,-35
@@ -91,9 +91,9 @@
 
   <!-- Reflet -->
   <path d="
-        M95,10
+        M85,30
         h30
-        c10,0,10,8,10,15
+        c8,0,10,8,10,15
         v20
         c0,8,8,15,10,25
         c2,10,2,25,2,40
@@ -101,13 +101,13 @@
         c0,10,-10,20,-10,35
         v40
         c0,15,10,25,10,40
-        v120
+        v100
         c0,15,-10,30,-20,35
         c-5,3,-10,5,-15,5
         h-14
         c-5,0,-10,-2,-15,-5
         c-10,-5,-20,-20,-20,-35
-        v-120
+        v-100
         c0,-15,10,-25,10,-40
         v-40
         c0,-15,-10,-25,-10,-35
@@ -122,12 +122,22 @@
   <!-- Liquide -->
   <g clip-path="url(#bottleClip)">
     <g class="liquid-group" id="liquidGroup" style="transform:translateY(var(--svg-translate, 100%));">
-      <rect x="0" y="240" width="220" height="500" class="liquid-shape"/>
+      <rect x="-10" y="240" width="220" height="500" class="liquid-shape"/>
       <path d="M-20 280 C 30 260, 90 290, 150 280 C 190 270, 230 300, 270 280 L270 320 L-20 320 Z" fill="#ff5b7a" opacity="0.96"/>
       <path d="M-20 295 C 30 280, 90 310, 150 295 C 190 285, 230 315, 270 295 L270 320 L-20 320 Z" fill="#fff" opacity="0.04"/>
     </g>
   </g>
+
+  <!-- Bulles -->
+  <g class="bubbles" id="bubbles">
+    <circle cx="90" cy="430" r="2" fill="#fff" opacity="0.8"/>
+    <circle cx="110" cy="410" r="3" fill="#fff" opacity="0.6"/>
+    <circle cx="95" cy="390" r="2" fill="#fff" opacity="0.7"/>
+    <circle cx="105" cy="370" r="1.5" fill="#fff" opacity="0.5"/>
+    <circle cx="100" cy="350" r="2.5" fill="#fff" opacity="0.7"/>
+  </g>
 </svg>
+
 
   <div class="side-right">
     <div><strong>englais</strong></div>
