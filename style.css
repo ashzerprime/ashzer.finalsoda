@@ -98,45 +98,36 @@ body {
   font-size: 18px;
   display: block;
 }
-
 .bottle-svg {
-  width: 100%;
+  width: 200px;
   height: auto;
   display: block;
+  margin: 0 auto;
 }
 
-/* The .bottle uses CSS var for fill level */
-.bottle {
-  --fill: 100%;
-}
-
-.bottle.filled {
-  --fill: 0%;
+.liquid-shape {
+  fill: #ff5b7a;
+  transition: transform 1s ease-in-out;
 }
 
 .bubbles {
   position: absolute;
-  top: 8%;
-  bottom: 6%;
-  left: 28%;
-  right: 28%;
-  overflow: hidden; /* Empêche les bulles de sortir de la bouteille */
+  top: 10%;
+  bottom: 10%;
+  left: 35%;
+  right: 35%;
+  overflow: hidden;
   pointer-events: none;
-  z-index: 3;
+  animation: floatBubbles 3s infinite ease-in-out;
 }
 
-@keyframes bubbleRise {
-  0% {
-    transform: translateY(0) scale(0.2);
-    opacity: 0.9;
-  }
-  20% {
-    opacity: 0.95;
-  }
-  100% {
-    transform: translateY(-230%) scale(0.9);
-    opacity: 0;
-  }
+@keyframes floatBubbles {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-10px); opacity: 0.8; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+
 }
 
 /* Hover animation */
